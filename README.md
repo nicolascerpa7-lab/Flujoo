@@ -1,3 +1,8 @@
+# Flujo de Suscripcion de Vehiculos - Flotas
+
+## Diagrama General del Proceso
+
+```mermaid
 flowchart TB
     subgraph INGRESO["1. INGRESO DE SOLICITUD"]
         direction TB
@@ -57,3 +62,65 @@ flowchart TB
     CONDICIONES --> APROBACION
     APROBACION --> SINIESTROS
     APROBACION --> POSVENTA
+```
+
+## Detalle por Etapa
+
+### 1. Ingreso de Solicitud
+
+| Actor | Informacion |
+|-------|-------------|
+| Cliente | RUT empresa, Tipo flota, Cantidad unidades, Historial siniestros 3-5 anos, Rutas y zonas riesgo, Controles internos |
+| Corredor | Solicitud formal, Cuadro comparativo flota, Analisis siniestralidad, Propuesta deducibles |
+| Ejecutivo Comercial | Ingreso al sistema, Crea reserva, Revisa otros ramos, Pre-chequeo reglas |
+
+### 2. Analisis del Suscriptor
+
+| Tipo Analisis | Elementos |
+|---------------|-----------|
+| Info Flota | Antiguedad, Tipologia, GPS y Telemetria, Propios vs Leasing |
+| Siniestralidad | Frecuencia, Severidad, PT vs Parciales, Tendencias |
+| Riesgo Operacional | Tipo carga, Zonas criticas, Rutas, Conductores |
+| Riesgo Moral | Estabilidad, Fraude, Conducta pago |
+
+## Flujo de Siniestros
+
+```mermaid
+flowchart LR
+    A["SINIESTRO REPORTADO"] --> B{"Evaluar dano"}
+    B -->|"Menor 75%"| C["PERDIDA PARCIAL"]
+    B -->|"Mayor 75%"| D["PERDIDA TOTAL"]
+    
+    C --> C1["Inspeccion"]
+    C1 --> C2["Presupuesto"]
+    C2 --> C3["Reparacion"]
+    C3 --> C4["Cobro deducible"]
+    
+    D --> D1["Confirmacion PT"]
+    D1 --> D2["Tasacion"]
+    D2 --> D3["Pago asegurado"]
+    D3 --> D4["Recupero"]
+```
+
+## KPIs de Suscripcion
+
+| Metrica | Formula | Valor Aceptable |
+|---------|---------|-----------------|
+| Frecuencia | Siniestros / Vehiculos | Menor a 15% |
+| Severidad | Monto total / Siniestros | Controlada |
+| PT vs Parciales | PT / Total perdidas | Menor a 25% |
+
+## Resumen Visual
+
+```mermaid
+flowchart LR
+    A[Cliente] --> B[Corredor]
+    B --> C[Ejecutivo]
+    C --> D[Reserva]
+    D --> E[Suscripcion]
+    E --> F[Condiciones]
+    F --> G[Aprobacion]
+    G --> H[Emision]
+    H --> I[Gestion Flota]
+    H --> J[Siniestros]
+```
